@@ -1,0 +1,11 @@
+{
+    "name": "silverstripe/serve",
+    "description": "Connects the PHP development server to SilverStripe",
+    "type": "silverstripe-module",
+    "license": "MIT",
+    "require": {
+        "php": "^5.4",
+        "symfony/process": "^3.0",
+        "silverstripe/framework": "^3.2"
+    }
+}
