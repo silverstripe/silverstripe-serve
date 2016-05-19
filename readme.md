@@ -15,3 +15,5 @@ You can override the host/port:
 ```sh
 $ framework/sake dev/tasks/SilverStripe-Serve-Task host=127.0.0.1 port=8000
 ```
+
+![](serve.gif)
