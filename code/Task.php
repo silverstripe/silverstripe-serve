@@ -30,7 +30,7 @@ class Task extends BuildTask
      */
     public function run($request)
     {
-        $path = __DIR__;
+        $base = __DIR__;
         $bin = (new PhpExecutableFinder)->find(false);
 
         $hash = getenv("SERVE_HASH");
@@ -38,7 +38,7 @@ class Task extends BuildTask
         $host = getenv("SERVE_HOST");
         $port = getenv("SERVE_PORT");
 
-        $command = "'{$bin}' -S {$host}:{$port} -t '{$path}' '{$path}/server.php'";
+        $command = "'{$bin}' -S {$host}:{$port} -t '{$path}' '{$base}/server.php'";
 
         if ($hash) {
             $command .= " SERVE_HASH={$hash}";

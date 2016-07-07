@@ -1,5 +1,13 @@
 <?php
 
+$hash = null;
+
+if (isset($_GET["hash"])) {
+    $hash = $_GET["hash"];
+}
+
+putenv("SERVE_HASH={$hash}");
+
 $host = "localhost";
 
 if (isset($_GET["host"])) {
