@@ -33,12 +33,19 @@ class Task extends BuildTask
         $path = __DIR__;
         $bin = (new PhpExecutableFinder)->find(false);
 
-        $root = SERVE_ROOT;
-        $host = SERVE_HOST;
-        $port = SERVE_PORT;
+        $hash = getenv("SERVE_HASH");
+        $path = getenv("SERVE_PATH");
+        $host = getenv("SERVE_HOST");
+        $port = getenv("SERVE_PORT");
+
+        $command = "'{$bin}' -S {$host}:{$port} -t '{$path}' '{$path}/server.php'";
+
+        if ($hash) {
+            $command .= " SERVE_HASH={$hash}";
+        }
 
         print "Server running at http://{$host}:{$port}\n";
 
-        passthru("'{$bin}' -S {$host}:{$port} -t '{$root}' '{$path}/server.php'");
+        passthru($command);
     }
 }
