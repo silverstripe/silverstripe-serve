@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+
+// module installed in project root
+if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
+	require_once __DIR__ . '/../../vendor/autoload.php';
+
+// module installed in vendor
+} else {
+	require_once __DIR__ . '/../../../../vendor/autoload.php';
+}
+
+// Parse command-line options and env vars
+$options = getopt(null, [ 'host:', 'port:', 'hash:' ]);
+
+if (!empty($options['host'])) {
+	$host = $options['host'];
+} elseif (getenv('SERVE_HOST')) {
+	$host = getenv('SERVE_HOST');
+} else {
+	$host = 'localhost';
+}
+
+if (!empty($options['port'])) {
+	$port = $options['port'];
+} elseif (getenv('SERVE_PORT')) {
+	$port = getenv('SERVE_PORT');
+} else {
+	$port = '8080';
+}
+
+if (!empty($options['hash'])) {
+	$hash = $options['hash'];
+} elseif (getenv('SERVE_HASH')) {
+	$hash = getenv('SERVE_HASH');
+} else {
+	$hash = null;
+}
+
+$server = new SilverStripe\Serve\ServerLauncher();
+$server->run($host, $port, BASE_PATH, $hash);
