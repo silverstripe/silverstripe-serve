@@ -11,7 +11,7 @@ if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
 }
 
 // Parse command-line options and env vars
-$options = getopt(null, [ 'host:', 'port:', 'hash:' ]);
+$options = getopt(null, [ 'host:', 'port:', 'hash:', 'bootstrap-file:' ]);
 
 if (!empty($options['host'])) {
 	$host = $options['host'];
@@ -37,5 +37,13 @@ if (!empty($options['hash'])) {
 	$hash = null;
 }
 
+if (!empty($options['bootstrap-file'])) {
+	$bootstrapFile = $options['bootstrap-file'];
+} elseif (getenv('SERVE_BOOTSTRAP_FILE')) {
+	$bootstrapFile = getenv('SERVE_BOOTSTRAP_FILE');
+} else {
+	$bootstrapFile = null;
+}
+
 $server = new SilverStripe\Serve\ServerLauncher();
-$server->run($host, $port, BASE_PATH, $hash);
+$server->run($host, $port, BASE_PATH, $hash, $bootstrapFile);
