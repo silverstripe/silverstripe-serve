@@ -29,7 +29,7 @@ class ServerLauncher
             $command .= " SERVE_HASH={$hash}";
         }
 
-        print "Server running at http://{$host}:{$port}...\n";
+        print "Server running at http://{$host}:{$port} for $path...\n";
 
         passthru($command);
     }
