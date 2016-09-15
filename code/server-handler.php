@@ -6,16 +6,8 @@
  * framework.
  */
 
-define('BASE_URL', '');
-
-// module installed in project root
-if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
-    require_once __DIR__ . '/../../vendor/autoload.php';
-
-// module installed in vendor
-} else {
-    require_once __DIR__ . '/../../../../vendor/autoload.php';
-}
+require_once __DIR__ . '/bootstrap.php';
+require_once BASE_PATH . '/vendor/autoload.php';
 
 // Include a bootstrap file (e.g. if you need extra settings to get a module started)
 if (getenv('SERVE_BOOTSTRAP_FILE')) {
@@ -33,4 +25,11 @@ if ($uri !== "/" && file_exists(BASE_PATH . $uri) && !is_dir(BASE_PATH . $uri)) 
 $_GET["url"] = $uri;
 $_REQUEST["url"] = $uri;
 
-require_once FRAMEWORK_PATH . '/main.php';
+// SS4
+if (defined('FRAMEWORK_PATH')) {
+    require_once FRAMEWORK_PATH . '/main.php';
+
+// SS3
+} else {
+    require_once BASE_PATH . '/framework/main.php';
+}

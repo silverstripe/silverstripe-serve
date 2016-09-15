@@ -1,14 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-// module installed in project root
-if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
-	require_once __DIR__ . '/../../vendor/autoload.php';
-
-// module installed in vendor
-} else {
-	require_once __DIR__ . '/../../../../vendor/autoload.php';
-}
+require_once __DIR__ . '/../code/bootstrap.php';
+require_once BASE_PATH . '/vendor/autoload.php';
 
 // Parse command-line options and env vars
 $options = getopt(null, [ 'host:', 'port:', 'hash:', 'bootstrap-file:' ]);
