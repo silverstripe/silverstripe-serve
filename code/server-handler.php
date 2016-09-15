@@ -10,16 +10,16 @@ define('BASE_URL', '');
 
 // module installed in project root
 if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
-	require_once __DIR__ . '/../../vendor/autoload.php';
+    require_once __DIR__ . '/../../vendor/autoload.php';
 
 // module installed in vendor
 } else {
-	require_once __DIR__ . '/../../../../vendor/autoload.php';
+    require_once __DIR__ . '/../../../../vendor/autoload.php';
 }
 
 // Include a bootstrap file (e.g. if you need extra settings to get a module started)
-if(getenv('SERVE_BOOTSTRAP_FILE')) {
-	require_once getenv('SERVE_BOOTSTRAP_FILE');
+if (getenv('SERVE_BOOTSTRAP_FILE')) {
+    require_once getenv('SERVE_BOOTSTRAP_FILE');
 }
 
 $uri = urldecode(

@@ -31,7 +31,7 @@ class ServerLauncher
         }
 
         if ($bootstrapFile) {
-        	$command = "SERVE_BOOTSTRAP_FILE=" . escapeshellarg($bootstrapFile) . " $command";
+            $command = "SERVE_BOOTSTRAP_FILE=" . escapeshellarg($bootstrapFile) . " $command";
         }
 
         print "Server running at http://{$host}:{$port} for $path...\n";
