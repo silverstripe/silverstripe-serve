@@ -23,14 +23,6 @@ if (!empty($options['port'])) {
 	$port = '8080';
 }
 
-if (!empty($options['hash'])) {
-	$hash = $options['hash'];
-} elseif (getenv('SERVE_HASH')) {
-	$hash = getenv('SERVE_HASH');
-} else {
-	$hash = null;
-}
-
 if (!empty($options['bootstrap-file'])) {
 	$bootstrapFile = $options['bootstrap-file'];
 } elseif (getenv('SERVE_BOOTSTRAP_FILE')) {
@@ -39,5 +31,13 @@ if (!empty($options['bootstrap-file'])) {
 	$bootstrapFile = null;
 }
 
-$server = new SilverStripe\Serve\ServerLauncher();
-$server->run($host, $port, BASE_PATH, $hash, $bootstrapFile);
+$factory = new SilverStripe\Serve\ServerFactory();
+
+$server = $factory->launchServer([
+    'preferredPort' => $port,
+    'host' => $host,
+    'bootstrapFile' => $bootstrapFile,
+]);
+
+print "Server running at " . $server->getURL() . " for "  . BASE_PATH . "...\n";
+$server->passthru();
