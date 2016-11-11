@@ -2,6 +2,8 @@
 
 namespace SilverStripe\Serve;
 
+use Symfony\Component\Process\Process;
+
 /**
  * Represents a single server
  */
@@ -22,6 +24,13 @@ class Server
         $this->command = $command;
         $this->host = $host;
         $this->port = $port;
+    }
+
+    public function __destruct()
+    {
+        if ($this->process) {
+            $this->stop();
+        }
     }
 
     /**
@@ -56,7 +65,27 @@ class Server
      */
     public function start()
     {
-        throw new \LogicException("Not implemented yet");
+        if ($this->process) {
+            throw new \LogicException("Server already started; cannot start a 2nd time");
+        }
+
+        $this->process = new Process($this->command);
+        $this->process->setTimeout(3600 * 6);
+        $this->process->start();
+
+        // Wait until the the port is open
+        $timeout = time() + 30;
+        while (time() <= $timeout) {
+            if (PortChecker::isPortOpen($this->host, $this->port)) {
+                break;
+            }
+
+            usleep(10000);
+        }
+
+        if (!PortChecker::isPortOpen($this->host, $this->port)) {
+            throw new \LogicException("Server didn't start on port $this->port for 30 seconds; something is kaput");
+        }
     }
 
     /**
@@ -64,7 +93,16 @@ class Server
      */
     public function stop()
     {
-        throw new \LogicException("Not implemented yet");
+        if (!$this->process) {
+            throw new \LogicException("Server not started; cannot stop");
+        }
+
+        $this->process->stop(10, SIGINT);
+        $this->process = null;
+
+        if (PortChecker::isPortOpen($this->host, $this->port)) {
+            throw new \LogicException("Server didn't close port $this->port for 30 seconds; something is kaput");
+        }
     }
 
     /**
@@ -73,6 +111,13 @@ class Server
      */
     public function passthru()
     {
-        passthru($this->command);
+        if (!$this->process) {
+            $this->start();
+        }
+
+        $this->process->wait(function ($type, $buffer) {
+
+            echo $buffer;
+        });
     }
 }

@@ -18,7 +18,7 @@ class ServerFactory
      * Create a new ServerFactory
      * @param string $path The base path of the hosted project. Defaults to BASE_PATH
      */
-    function __construct($path = null)
+    public function __construct($path = null)
     {
         $this->path = $path ? $path : BASE_PATH;
     }
@@ -39,10 +39,10 @@ class ServerFactory
         $bin = (new PhpExecutableFinder)->find(false);
 
         $host = empty($options['host']) ? '0.0.0.0' : $options['host'];
-        $port = $options['preferredPort'];
+        $port = PortChecker::findNextAvailablePort($host, $options['preferredPort']);
 
         $base = __DIR__;
-        $command = escapeshellcmd($bin) .
+        $command = "exec " . escapeshellcmd($bin) .
             ' -S ' . escapeshellarg($host . ':' . $port) .
             ' -t ' . escapeshellarg($this->path) . ' ' .
             escapeshellarg($base . '/server-handler.php');
@@ -51,6 +51,9 @@ class ServerFactory
             $command = "SERVE_BOOTSTRAP_FILE=" . escapeshellarg($options['bootstrapFile']) . " $command";
         }
 
-        return new Server($command, $host, $port);
+        $server = new Server($command, $host, $port);
+        $server->start();
+
+        return $server;
     }
 }
