@@ -11,6 +11,10 @@ if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
 // module installed in vendor
 } elseif (file_exists(__DIR__ . '/../../../../vendor/autoload.php')) {
     define('BASE_PATH', realpath(__DIR__ . '/../../../../'));
+
+// module use directly
+} elseif (file_exists(__DIR__ . '/../vendor/autoload.php')) {
+    define('BASE_PATH', realpath(__DIR__ . '/../'));
 }
 
 // Serve always hosts from the root

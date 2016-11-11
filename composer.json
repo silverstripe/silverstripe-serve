@@ -5,7 +5,8 @@
     "require": {
         "php": "^5.4|^7.0",
         "symfony/process": "^3.0",
-        "silverstripe/framework": ">=3.2"
+        "silverstripe/framework": ">=3.2@dev",
+        "phpunit/phpunit": "^4.8"
     },
     "autoload": {
         "psr-4": {
