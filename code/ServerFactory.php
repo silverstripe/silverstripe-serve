@@ -11,6 +11,18 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 class ServerFactory
 {
+
+    private $path;
+
+    /**
+     * Create a new ServerFactory
+     * @param string $path The base path of the hosted project. Defaults to BASE_PATH
+     */
+    function __construct($path = null)
+    {
+        $this->path = $path ? $path : BASE_PATH;
+    }
+
     /**
      * Create a new Server object
      *
@@ -28,19 +40,17 @@ class ServerFactory
 
         $host = empty($options['host']) ? '0.0.0.0' : $options['host'];
         $port = $options['preferredPort'];
-        $path = BASE_PATH;
 
         $base = __DIR__;
         $command = escapeshellcmd($bin) .
             ' -S ' . escapeshellarg($host . ':' . $port) .
-            ' -t ' . escapeshellarg($path) . ' ' .
+            ' -t ' . escapeshellarg($this->path) . ' ' .
             escapeshellarg($base . '/server-handler.php');
 
         if (!empty($options['bootstrapFile'])) {
             $command = "SERVE_BOOTSTRAP_FILE=" . escapeshellarg($options['bootstrapFile']) . " $command";
         }
 
-        echo $command;
         return new Server($command, $host, $port);
     }
 }
