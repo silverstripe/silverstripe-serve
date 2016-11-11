@@ -12,7 +12,7 @@ if (!empty($options['host'])) {
 } elseif (getenv('SERVE_HOST')) {
 	$host = getenv('SERVE_HOST');
 } else {
-	$host = 'localhost';
+	$host = '0.0.0.0';
 }
 
 if (!empty($options['port'])) {
