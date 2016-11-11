@@ -20,7 +20,7 @@ foreach ($paths as $path) {
 }
 
 // Parse command-line options and env vars
-$options = getopt(null, [ 'host:', 'port:', 'hash:', 'bootstrap-file:' ]);
+$options = getopt(null, [ 'host:', 'port:', 'hash:', 'bootstrap-file:', 'open' ]);
 
 if (!empty($options['host'])) {
 	$host = $options['host'];
@@ -57,4 +57,10 @@ $server = $factory->launchServer([
 ]);
 
 print "Server running at " . $server->getURL() . " for "  . $path . "...\n";
+
+if (isset($options['open'])) {
+    $CLI_url = escapeshellarg($server->getURL());
+    echo `open $CLI_url`;
+}
+
 $server->passthru();

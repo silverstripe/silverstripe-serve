@@ -20,6 +20,16 @@ $ vendor/bin/serve --host 127.0.0.1 --port 8000
 
 ![](serve.gif)
 
+## Opening a browser (OS X only)
+
+If you are running OS X (or anything that has an `open` binary), you can
+add the `--open` argument to open a new browser window with the new server
+
+```sh
+$ vendor/bin/serve --open
+```
+
+
 ## Including a bootstrap file
 
 The bootstrap-file argument lets you include a custom PHP file after
