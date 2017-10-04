@@ -25,11 +25,13 @@ if ($uri !== "/" && file_exists(BASE_PATH . $uri) && !is_dir(BASE_PATH . $uri)) 
 $_GET["url"] = $uri;
 $_REQUEST["url"] = $uri;
 
-// SS4
-if (defined('FRAMEWORK_PATH')) {
+if (file_exists(BASE_PATH . '/index.php')) {
+    // SS4 with base path as webroot
+    require_once BASE_PATH . '/index.php';
+} elseif (defined('FRAMEWORK_PATH')) {
+    // SS3 with custom framework path
     require_once FRAMEWORK_PATH . '/main.php';
-
-// SS3
 } else {
+    // SS3 with default framework path
     require_once BASE_PATH . '/framework/main.php';
 }

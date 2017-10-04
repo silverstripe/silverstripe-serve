@@ -1,4 +1,4 @@
-<phpunit colors="true">
+<phpunit bootstrap="tests/bootstrap.php" colors="true">
 	<testsuite name="Default">
 		<directory>tests</directory>
 	</testsuite>

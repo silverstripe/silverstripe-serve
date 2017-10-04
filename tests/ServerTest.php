@@ -10,8 +10,17 @@ class ServerTest extends \PHPUnit_Framework_TestCase
     public function testStartStop()
     {
         $factory = new ServerFactory(realpath(__DIR__ . '/..'));
+
+        if (file_exists(BASE_PATH . '/vendor/silverstripe/framework/tests/behat/serve-bootstrap.php')) {
+            // SS4
+            $bootstrapFile = 'vendor/silverstripe/framework/tests/behat/serve-bootstrap.php';
+        } else {
+            // SS3
+            $bootstrapFile = 'framework/tests/behat/serve-bootstrap.php';
+        }
+
         $server = $factory->launchServer([
-            'bootstrapFile' => 'framework/tests/behat/serve-bootstrap.php',
+            'bootstrapFile' => $bootstrapFile,
             'host' => 'localhost',
             'preferredPort' => '3000',
         ]);
@@ -19,8 +28,11 @@ class ServerTest extends \PHPUnit_Framework_TestCase
         // Server is immediately started
         $this->assertTrue(PortChecker::isPortOpen('localhost', $server->getPort()));
 
-        $content = file_get_contents($server->getURL() . 'dev');
-        $this->assertContains('<h1>SilverStripe Development Tools</h1>', $content);
+        // Test a "stable" URL available via the framework module, that isn't tied to an environment type
+        $content = file_get_contents($server->getURL() . 'Security/login');
+
+        // Check that the login form exists on the displayed page
+        $this->assertContains('MemberLoginForm_LoginForm', $content);
 
         // When it stops, it stops listening
         $server->stop();
