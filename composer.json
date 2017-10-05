@@ -18,5 +18,8 @@
     },
     "bin": ["bin/serve"],
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "scripts": {
+        "lint": "phpcs --standard=PSR2 code/ bin/ tests/"
+    }
 }
