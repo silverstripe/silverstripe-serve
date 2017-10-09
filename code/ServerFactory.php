@@ -2,8 +2,6 @@
 
 namespace SilverStripe\Serve;
 
-use BuildTask;
-use SS_HTTPRequest;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
@@ -12,15 +10,21 @@ use Symfony\Component\Process\PhpExecutableFinder;
 class ServerFactory
 {
 
+    /**
+     * Path to base folder for this app
+     *
+     * @var string
+     */
     private $path;
 
     /**
      * Create a new ServerFactory
+     *
      * @param string $path The base path of the hosted project. Defaults to BASE_PATH
      */
     public function __construct($path = null)
     {
-        $this->path = $path ? $path : BASE_PATH;
+        $this->path = $path ?: BASE_PATH;
     }
 
     /**

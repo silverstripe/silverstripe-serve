@@ -6,8 +6,9 @@
  * framework.
  */
 
-require_once __DIR__ . '/bootstrap.php';
-require_once BASE_PATH . '/vendor/autoload.php';
+// Serve always hosts from the root
+define('BASE_URL', '');
+define('BASE_PATH', getcwd());
 
 // Include a bootstrap file (e.g. if you need extra settings to get a module started)
 if (getenv('SERVE_BOOTSTRAP_FILE')) {
@@ -25,13 +26,15 @@ if ($uri !== "/" && file_exists(BASE_PATH . $uri) && !is_dir(BASE_PATH . $uri)) 
 $_GET["url"] = $uri;
 $_REQUEST["url"] = $uri;
 
-if (file_exists(BASE_PATH . '/index.php')) {
-    // SS4 with base path as webroot
-    require_once BASE_PATH . '/index.php';
-} elseif (defined('FRAMEWORK_PATH')) {
-    // SS3 with custom framework path
-    require_once FRAMEWORK_PATH . '/main.php';
-} else {
-    // SS3 with default framework path
-    require_once BASE_PATH . '/framework/main.php';
+
+$paths = [
+    '/index.php',
+    '/vendor/silversstripe/framework/main.php',
+    '/framework/main.php',
+];
+foreach ($paths as $path) {
+    if (file_exists(BASE_PATH . $path)) {
+        require_once BASE_PATH . $path;
+        break;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace SilverStripe\Serve;
 
+use LogicException;
 use Symfony\Component\Process\Process;
 
 /**
@@ -9,15 +10,39 @@ use Symfony\Component\Process\Process;
  */
 class Server
 {
-
+    /**
+     * The command to initiate the server
+     *
+     * @var string
+     */
     private $command;
+
+    /**
+     * Hostname
+     *
+     * @var string
+     */
     private $host;
+
+    /**
+     * Port number
+     *
+     * @var int
+     */
     private $port;
+
+    /**
+     * Process being executed
+     *
+     * @var Process
+     */
     private $process;
 
     /**
      * Construct a new server
      * @param string $command The command to initiate the server
+     * @param string $host Hostname
+     * @param int $port Port number
      */
     public function __construct($command, $host, $port)
     {
@@ -66,7 +91,7 @@ class Server
     public function start()
     {
         if ($this->process) {
-            throw new \LogicException("Server already started; cannot start a 2nd time");
+            throw new LogicException("Server already started; cannot start a 2nd time");
         }
 
         $this->process = new Process($this->command);
@@ -84,7 +109,7 @@ class Server
         }
 
         if (!PortChecker::isPortOpen($this->host, $this->port)) {
-            throw new \LogicException("Server didn't start on port $this->port for 30 seconds; something is kaput");
+            throw new LogicException("Server didn't start on port $this->port for 30 seconds; something is kaput");
         }
     }
 
@@ -94,14 +119,14 @@ class Server
     public function stop()
     {
         if (!$this->process) {
-            throw new \LogicException("Server not started; cannot stop");
+            throw new LogicException("Server not started; cannot stop");
         }
 
         $this->process->stop(10, SIGINT);
         $this->process = null;
 
         if (PortChecker::isPortOpen($this->host, $this->port)) {
-            throw new \LogicException("Server didn't close port $this->port for 30 seconds; something is kaput");
+            throw new LogicException("Server didn't close port $this->port for 30 seconds; something is kaput");
         }
     }
 
@@ -116,7 +141,6 @@ class Server
         }
 
         $this->process->wait(function ($type, $buffer) {
-
             echo $buffer;
         });
     }
