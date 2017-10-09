@@ -29,7 +29,7 @@ $_REQUEST["url"] = $uri;
 
 $paths = [
     '/index.php',
-    '/vendor/silversstripe/framework/main.php',
+    '/vendor/silverstripe/framework/main.php',
     '/framework/main.php',
 ];
 foreach ($paths as $path) {
