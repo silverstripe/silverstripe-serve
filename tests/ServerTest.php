@@ -2,16 +2,18 @@
 
 namespace SilverStripe\Serve\Tests;
 
+use BadMethodCallException;
+use PHPUnit_Framework_TestCase;
 use SilverStripe\Serve\ServerFactory;
 use SilverStripe\Serve\PortChecker;
 
-class ServerTest extends \PHPUnit_Framework_TestCase
+class ServerTest extends PHPUnit_Framework_TestCase
 {
     public function testStartStop()
     {
-        $factory = new ServerFactory(realpath(__DIR__ . '/..'));
+        $factory = new ServerFactory(BASE_PATH);
         $server = $factory->launchServer([
-            'bootstrapFile' => 'framework/tests/behat/serve-bootstrap.php',
+            'bootstrapFile' => $this->getBootstrapPath(),
             'host' => 'localhost',
             'preferredPort' => '3000',
         ]);
@@ -19,8 +21,11 @@ class ServerTest extends \PHPUnit_Framework_TestCase
         // Server is immediately started
         $this->assertTrue(PortChecker::isPortOpen('localhost', $server->getPort()));
 
-        $content = file_get_contents($server->getURL() . 'dev');
-        $this->assertContains('<h1>SilverStripe Development Tools</h1>', $content);
+        // Test a "stable" URL available via the framework module, that isn't tied to an environment type
+        $content = file_get_contents($server->getURL() . 'Security/login');
+
+        // Check that the login form exists on the displayed page
+        $this->assertContains('MemberLoginForm_LoginForm', $content);
 
         // When it stops, it stops listening
         $server->stop();
@@ -42,7 +47,7 @@ class ServerTest extends \PHPUnit_Framework_TestCase
 
     public function testStopTwiceFails()
     {
-        $factory = new ServerFactory(realpath(__DIR__ . '/..'));
+        $factory = new ServerFactory(BASE_PATH);
         $server = $factory->launchServer([
             'host' => 'localhost',
             'preferredPort' => '3000',
@@ -57,7 +62,7 @@ class ServerTest extends \PHPUnit_Framework_TestCase
 
     public function testPreferredPortFindsAnOpenPort()
     {
-        $factory = new ServerFactory(realpath(__DIR__ . '/..'));
+        $factory = new ServerFactory(BASE_PATH);
         $server1 = $factory->launchServer([
             'host' => 'localhost',
             'preferredPort' => '3000',
@@ -72,5 +77,26 @@ class ServerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(PortChecker::isPortOpen('localhost', $server1->getPort()));
         $this->assertTrue(PortChecker::isPortOpen('localhost', $server2->getPort()));
+    }
+
+    /**
+     * Get relative path to serve-bootstrap.php from cwd
+     *
+     * @return string
+     */
+    protected function getBootstrapPath()
+    {
+        $parents = [
+            'vendor/silverstripe/framework/', // framework in vendor
+            'framework/', // old ss4 root module
+            '' // framework root
+        ];
+        $path = 'tests/behat/serve-bootstrap.php';
+        foreach ($parents as $parent) {
+            if (file_exists(BASE_PATH . '/' . $parent . $path)) {
+                return $parent . $path;
+            }
+        }
+        throw new BadMethodCallException("serve-bootstrap.php could not be found");
     }
 }

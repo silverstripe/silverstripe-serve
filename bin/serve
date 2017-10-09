@@ -1,8 +1,21 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__ . '/../code/bootstrap.php';
-require_once BASE_PATH . '/vendor/autoload.php';
+// Serve always hosts from the root
+define('BASE_URL', '');
+
+// Autoload
+$paths = [
+    __DIR__ . "/../autoload.php", // in ./vendor/bin
+    __DIR__ . "/../vendor/autoload.php", // in ./bin
+    __DIR__ . "/../../../autoload.php", // in ./vendor/silverstripe/serve/bin
+];
+foreach ($paths as $path) {
+    if (file_exists($path)) {
+        require_once $path;
+        break;
+    }
+}
 
 // Parse command-line options and env vars
 $options = getopt(null, [ 'host:', 'port:', 'hash:', 'bootstrap-file:' ]);

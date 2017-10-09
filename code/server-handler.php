@@ -6,8 +6,7 @@
  * framework.
  */
 
-require_once __DIR__ . '/bootstrap.php';
-require_once BASE_PATH . '/vendor/autoload.php';
+require_once('constants.php');
 
 // Include a bootstrap file (e.g. if you need extra settings to get a module started)
 if (getenv('SERVE_BOOTSTRAP_FILE')) {
@@ -25,11 +24,15 @@ if ($uri !== "/" && file_exists(BASE_PATH . $uri) && !is_dir(BASE_PATH . $uri)) 
 $_GET["url"] = $uri;
 $_REQUEST["url"] = $uri;
 
-// SS4
-if (defined('FRAMEWORK_PATH')) {
-    require_once FRAMEWORK_PATH . '/main.php';
 
-// SS3
-} else {
-    require_once BASE_PATH . '/framework/main.php';
+$paths = [
+    '/index.php',
+    '/vendor/silverstripe/framework/main.php',
+    '/framework/main.php',
+];
+foreach ($paths as $path) {
+    if (file_exists(BASE_PATH . $path)) {
+        require_once BASE_PATH . $path;
+        break;
+    }
 }
