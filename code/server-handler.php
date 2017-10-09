@@ -6,7 +6,8 @@
  * framework.
  */
 
-require_once('constants.php');
+require_once 'constants.php';
+require_once BASE_PATH . '/vendor/autoload.php';
 
 // Include a bootstrap file (e.g. if you need extra settings to get a module started)
 if (getenv('SERVE_BOOTSTRAP_FILE')) {
