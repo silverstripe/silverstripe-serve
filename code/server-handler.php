@@ -6,9 +6,7 @@
  * framework.
  */
 
-// Serve always hosts from the root
-define('BASE_URL', '');
-define('BASE_PATH', getcwd());
+require_once('constants.php');
 
 // Include a bootstrap file (e.g. if you need extra settings to get a module started)
 if (getenv('SERVE_BOOTSTRAP_FILE')) {
