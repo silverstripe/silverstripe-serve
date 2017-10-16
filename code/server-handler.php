@@ -6,12 +6,14 @@
  * framework.
  */
 
+use SilverStripe\Core\Environment;
+
 require_once 'constants.php';
 require_once BASE_PATH . '/vendor/autoload.php';
 
 // Include a bootstrap file (e.g. if you need extra settings to get a module started)
-if (getenv('SERVE_BOOTSTRAP_FILE')) {
-    require_once getenv('SERVE_BOOTSTRAP_FILE');
+if (Environment::getEnv('SERVE_BOOTSTRAP_FILE')) {
+    require_once Environment::getEnv('SERVE_BOOTSTRAP_FILE');
 }
 
 $uri = urldecode(
