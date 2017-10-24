@@ -2,6 +2,8 @@
 <?php
 
 // Serve always hosts from the root
+use SilverStripe\Core\Environment;
+
 define('BASE_URL', '');
 
 // Autoload
@@ -22,24 +24,24 @@ $options = getopt(null, [ 'host:', 'port:', 'hash:', 'bootstrap-file:' ]);
 
 if (!empty($options['host'])) {
 	$host = $options['host'];
-} elseif (getenv('SERVE_HOST')) {
-	$host = getenv('SERVE_HOST');
+} elseif (Environment::getEnv('SERVE_HOST')) {
+	$host = Environment::getEnv('SERVE_HOST');
 } else {
 	$host = '0.0.0.0';
 }
 
 if (!empty($options['port'])) {
 	$port = $options['port'];
-} elseif (getenv('SERVE_PORT')) {
-	$port = getenv('SERVE_PORT');
+} elseif (Environment::getEnv('SERVE_PORT')) {
+	$port = Environment::getEnv('SERVE_PORT');
 } else {
 	$port = '8080';
 }
 
 if (!empty($options['bootstrap-file'])) {
 	$bootstrapFile = $options['bootstrap-file'];
-} elseif (getenv('SERVE_BOOTSTRAP_FILE')) {
-	$bootstrapFile = getenv('SERVE_BOOTSTRAP_FILE');
+} elseif (Environment::getEnv('SERVE_BOOTSTRAP_FILE')) {
+	$bootstrapFile = Environment::getEnv('SERVE_BOOTSTRAP_FILE');
 } else {
 	$bootstrapFile = null;
 }
