@@ -3,9 +3,9 @@
     "description": "Connects the PHP development server to SilverStripe",
     "license": "MIT",
     "require": {
-        "php": "^5.6||^7.0",
-        "symfony/process": "^3.0",
-        "silverstripe/framework": "^4"
+        "php": "^5.6||^7",
+        "symfony/process": "^3",
+        "silverstripe/framework": "^5"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.7"
@@ -17,7 +17,7 @@
     },
     "extra": {
         "branch-alias": {
-            "2.x-dev": "2.1.x-dev"
+            "dev-master": "3.x-dev"
         }
     },
     "bin": [
