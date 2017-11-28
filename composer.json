@@ -15,6 +15,11 @@
             "SilverStripe\\Serve\\": "code/"
         }
     },
+    "extra": {
+        "branch-alias": {
+            "2.x-dev": "2.1.x-dev"
+        }
+    },
     "bin": [
         "bin/serve"
     ],
