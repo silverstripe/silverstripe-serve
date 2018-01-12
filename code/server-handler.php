@@ -29,6 +29,7 @@ $_REQUEST["url"] = $uri;
 
 
 $paths = [
+    '/public/index.php',
     '/index.php',
     '/vendor/silverstripe/framework/main.php',
     '/framework/main.php',
