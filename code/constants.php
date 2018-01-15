@@ -1,6 +1,5 @@
 <?php
 
-
 // Serve always hosts from the root
 define('BASE_URL', '');
 
