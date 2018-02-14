@@ -46,7 +46,9 @@ if (!empty($options['bootstrap-file'])) {
 	$bootstrapFile = null;
 }
 
-$factory = new SilverStripe\Serve\ServerFactory();
+$path = defined('PUBLIC_PATH') ? PUBLIC_PATH : BASE_PATH;
+
+$factory = new SilverStripe\Serve\ServerFactory($path);
 
 $server = $factory->launchServer([
     'preferredPort' => $port,
@@ -54,5 +56,5 @@ $server = $factory->launchServer([
     'bootstrapFile' => $bootstrapFile,
 ]);
 
-print "Server running at " . $server->getURL() . " for "  . BASE_PATH . "...\n";
+print "Server running at " . $server->getURL() . " for "  . $path . "...\n";
 $server->passthru();

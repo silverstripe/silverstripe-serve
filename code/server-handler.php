@@ -10,6 +10,7 @@ use SilverStripe\Core\Environment;
 
 require_once 'constants.php';
 require_once BASE_PATH . '/vendor/autoload.php';
+require_once 'constants-compat.php';
 
 // Include a bootstrap file (e.g. if you need extra settings to get a module started)
 if (Environment::getEnv('SERVE_BOOTSTRAP_FILE')) {
@@ -20,7 +21,7 @@ $uri = urldecode(
     parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
 );
 
-if ($uri !== "/" && file_exists(BASE_PATH . $uri) && !is_dir(BASE_PATH . $uri)) {
+if ($uri !== "/" && file_exists(PUBLIC_PATH . $uri) && !is_dir(PUBLIC_PATH . $uri)) {
     return false;
 }
 
@@ -29,6 +30,7 @@ $_REQUEST["url"] = $uri;
 
 
 $paths = [
+    '/public/index.php',
     '/index.php',
     '/vendor/silverstripe/framework/main.php',
     '/framework/main.php',

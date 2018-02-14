@@ -2,4 +2,11 @@
 
 // Serve always hosts from the root
 define('BASE_URL', '');
-define('BASE_PATH', getcwd());
+
+// Detect BASE_PATH with public-folder awareness
+define(
+    'BASE_PATH',
+    basename(getcwd()) === 'public'
+        ? dirname(getcwd())
+        : getcwd()
+);
