@@ -95,7 +95,7 @@ class Server
         }
 
         $this->process = new Process($this->command);
-        $this->process->setTimeout(3600 * 6);
+        $this->process->setTimeout(null);
         $this->process->start();
 
         // Wait until the the port is open
