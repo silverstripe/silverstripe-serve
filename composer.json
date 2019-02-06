@@ -26,6 +26,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-        "lint": "phpcs --standard=PSR2 code/ bin/ tests/"
+        "lint": "vendor/bin/phpcs --standard=PSR2 code/ bin/ tests/"
     }
 }
