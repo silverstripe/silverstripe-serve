@@ -20,7 +20,7 @@ foreach ($paths as $path) {
 }
 
 // Parse command-line options and env vars
-$options = getopt(null, [ 'host:', 'port:', 'hash:', 'bootstrap-file:' ]);
+$options = getopt(null, [ 'host:', 'port:', 'hash:', 'bootstrap-file:', 'open' ]);
 
 if (!empty($options['host'])) {
 	$host = $options['host'];
@@ -57,4 +57,34 @@ $server = $factory->launchServer([
 ]);
 
 print "Server running at " . $server->getURL() . " for "  . $path . "...\n";
+
+// Check if the user wants to open the page in their browser
+if (isset($options['open'])) {
+    // Simple function to detect if a command exists on *nix system
+    $command_exist = function($cmd) {
+        $return = shell_exec(sprintf("which %s", escapeshellarg($cmd)));
+        return !empty($return);
+    };
+
+    // Pick which command to use
+    $cmd = '';
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        // Windows
+        $cmd = 'start';
+    } else if ($command_exist('xdg-open')) {
+        // Linux
+        $cmd = 'xdg-open';
+    } else if ($command_exist('open')) {
+        // MacOS
+        $cmd = 'open';
+    }
+
+    if ($cmd) {
+        $CLI_url = escapeshellarg($server->getURL());
+        echo `$cmd $CLI_url`;
+    } else {
+        echo "Could not identify the command to open a URL on you operating system.\n";
+    }
+}
+
 $server->passthru();
