@@ -51,7 +51,7 @@ class ServerFactory
             ' -t ' . escapeshellarg($this->path) . ' ' .
             escapeshellarg($base . '/server-handler.php');
         if(\DIRECTORY_SEPARATOR !== '\\') {
-            $command = "exec ";
+            $command .= "exec ";
         }
 
         if (!empty($options['bootstrapFile'])) {
