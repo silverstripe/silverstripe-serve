@@ -1,5 +1,7 @@
 # SilverStripe Serve
 
+[![Build Status](https://api.travis-ci.com/silverstripe/silverstripe-serve.svg?branch=2)](https://travis-ci.com/silverstripe/silverstripe-serve)
+
 A simple dev task, to start a development server for your SilverStripe app.
 
 ## Getting started
