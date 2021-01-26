@@ -15,7 +15,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
         $server = $factory->launchServer([
             'bootstrapFile' => $this->getBootstrapPath(),
             'host' => 'localhost',
-            'preferredPort' => '3000',
+            'preferredPort' => '9000',
         ]);
 
         // Server is immediately started
@@ -37,7 +37,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
         $factory = new ServerFactory(realpath(__DIR__ . '/..'));
         $server = $factory->launchServer([
             'host' => 'localhost',
-            'preferredPort' => '3000',
+            'preferredPort' => '9000',
         ]);
 
         // Start fails because the server is already started
@@ -50,7 +50,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
         $factory = new ServerFactory(BASE_PATH);
         $server = $factory->launchServer([
             'host' => 'localhost',
-            'preferredPort' => '3000',
+            'preferredPort' => '9000',
         ]);
 
         $server->stop();
@@ -65,12 +65,12 @@ class ServerTest extends PHPUnit_Framework_TestCase
         $factory = new ServerFactory(BASE_PATH);
         $server1 = $factory->launchServer([
             'host' => 'localhost',
-            'preferredPort' => '3000',
+            'preferredPort' => '9000',
         ]);
 
         $server2 = $factory->launchServer([
             'host' => 'localhost',
-            'preferredPort' => '3000',
+            'preferredPort' => '9000',
         ]);
 
         $this->assertNotEquals($server1->getPort(), $server2->getPort());
