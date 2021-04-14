@@ -71,3 +71,16 @@ launchServer allows the following options to be passed to it:
  * **preferredPort:** The preferred port. If this port isn't available, the next
    highest one will be used
  * **bootstrapFile:** The bootstrap file, as described above
+
+## Using as global
+
+```
+composer global require silverstripe/serve
+```
+
+Then you can run `serve` with the `--path` argument
+
+```
+serve --path=.
+```
+
