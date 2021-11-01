@@ -3,11 +3,11 @@
 namespace SilverStripe\Serve\Tests;
 
 use BadMethodCallException;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use SilverStripe\Serve\ServerFactory;
 use SilverStripe\Serve\PortChecker;
 
-class ServerTest extends PHPUnit_Framework_TestCase
+class ServerTest extends TestCase
 {
     public function testStartStop()
     {
@@ -25,7 +25,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
         $content = file_get_contents($server->getURL() . 'Security/login');
 
         // Check that the login form exists on the displayed page
-        $this->assertContains('MemberLoginForm_LoginForm', $content);
+        $this->assertStringContainsString('MemberLoginForm_LoginForm', $content);
 
         // When it stops, it stops listening
         $server->stop();
@@ -41,7 +41,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
         ]);
 
         // Start fails because the server is already started
-        $this->setExpectedException('LogicException');
+        $this->expectException(\LogicException::class);
         $server->start();
     }
 
@@ -56,7 +56,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
         $server->stop();
 
         // Stop a 2nd fails because the server is already stopped
-        $this->setExpectedException('LogicException');
+        $this->expectException(\LogicException::class);
         $server->stop();
     }
 
