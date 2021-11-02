@@ -1,13 +1,15 @@
 language: php
 
-dist: trusty
+dist: xenial
 
 matrix:
   fast_finish: true
   include:
-    - php: 5.6
+    - php: 7.3
       env: PHPUNIT_TEST=1 PHPCS_TEST=1
-    - php: 7.0
+    - php: 7.4
+      env: PHPUNIT_TEST=1
+    - php: 8.0
       env: PHPUNIT_TEST=1
 
 before_script:
@@ -15,7 +17,7 @@ before_script:
   - export PATH=~/.composer/vendor/bin:$PATH
   - composer validate
   - if [[ $PHPCS_TEST ]]; then composer require squizlabs/php_codesniffer:^3 --no-update --prefer-dist --dev; fi
-  - composer require --prefer-dist --no-update silverstripe/recipe-core:1.x-dev
+  - composer require --prefer-dist --no-update silverstripe/recipe-core:4.x-dev
   - composer install --prefer-dist
 
 script:
