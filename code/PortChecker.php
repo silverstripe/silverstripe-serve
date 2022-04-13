@@ -24,7 +24,7 @@ class PortChecker
             $host = 'localhost';
         }
 
-        $connection = @fsockopen($host, $port);
+        $connection = @fsockopen($host ?? '', $port ?? 0);
         if (is_resource($connection)) {
             fclose($connection);
             return true;
