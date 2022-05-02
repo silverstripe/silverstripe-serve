@@ -1,15 +1,15 @@
 language: php
 
-dist: xenial
+dist: bionic
 
 matrix:
   fast_finish: true
   include:
-    - php: 7.3
-      env: PHPUNIT_TEST=1 PHPCS_TEST=1
     - php: 7.4
-      env: PHPUNIT_TEST=1
+      env: PHPUNIT_TEST=1 PHPCS_TEST=1
     - php: 8.0
+      env: PHPUNIT_TEST=1
+    - php: 8.1
       env: PHPUNIT_TEST=1
 
 before_script:
