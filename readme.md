@@ -78,7 +78,7 @@ launchServer allows the following options to be passed to it:
 composer global require silverstripe/serve
 ```
 
-Then you can run `serve` with the `--path` argument
+Then you can run `serve` with the `--path` argument.
 
 ```
 serve --path=.

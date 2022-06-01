@@ -5,9 +5,10 @@ dist: trusty
 matrix:
   fast_finish: true
   include:
-    - php: 7.1
+    - php: 7.4
       env: PHPUNIT_TEST=1 PHPCS_TEST=1
-
+    - php: 8.0
+      env: PHPUNIT_TEST=1
 before_script:
   - phpenv rehash
   - export PATH=~/.composer/vendor/bin:$PATH

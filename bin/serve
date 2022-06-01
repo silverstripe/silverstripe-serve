@@ -7,7 +7,7 @@ use SilverStripe\Core\Environment;
 define('BASE_URL', '');
 
 // Parse command-line options and env vars
-$options = getopt(null, [ 'host:', 'port:', 'hash:', 'bootstrap-file:', 'open', 'path:' ]);
+$options = getopt(null, ['host:', 'port:', 'hash:', 'bootstrap-file:', 'open', 'path:']);
 
 // Autoload
 $paths = [
@@ -21,11 +21,12 @@ if (!empty($options['path'])) {
     $options['path'] = realpath($options['path']);
     $dir = rtrim($options['path'], '/');
 
-    if (is_dir($dir)) {
+    if (!is_dir($dir)) {
         throw new Exception('--path is not a valid directory');
     }
 
-    $paths[] = $dir . '/../autoload.php';
+    $paths[] = $dir . '/vendor/autoload.php'; // BASE_PATH
+    $paths[] = $dir . '/../vendor/autoload.php'; // PUBLIC_PATH
 }
 
 foreach ($paths as $path) {
@@ -36,31 +37,36 @@ foreach ($paths as $path) {
 }
 
 if (!empty($options['host'])) {
-	$host = $options['host'];
+    $host = $options['host'];
 } elseif (Environment::getEnv('SERVE_HOST')) {
-	$host = Environment::getEnv('SERVE_HOST');
+    $host = Environment::getEnv('SERVE_HOST');
 } else {
-	$host = '0.0.0.0';
+    $host = '0.0.0.0';
 }
 
 if (!empty($options['port'])) {
-	$port = $options['port'];
+    $port = $options['port'];
 } elseif (Environment::getEnv('SERVE_PORT')) {
-	$port = Environment::getEnv('SERVE_PORT');
+    $port = Environment::getEnv('SERVE_PORT');
 } else {
-	$port = '8080';
+    $port = '8080';
 }
 
 if (!empty($options['bootstrap-file'])) {
-	$bootstrapFile = $options['bootstrap-file'];
+    $bootstrapFile = $options['bootstrap-file'];
 } elseif (Environment::getEnv('SERVE_BOOTSTRAP_FILE')) {
-	$bootstrapFile = Environment::getEnv('SERVE_BOOTSTRAP_FILE');
+    $bootstrapFile = Environment::getEnv('SERVE_BOOTSTRAP_FILE');
 } else {
-	$bootstrapFile = null;
+    $bootstrapFile = null;
 }
 
 if (!empty($options['path'])) {
     $path = $options['path'];
+    $dir = rtrim($options['path'], '/');
+
+    if (is_dir($dir . '/public')) {
+        $path = $dir . '/public';
+    }
 } else {
     $path = defined('PUBLIC_PATH') ? PUBLIC_PATH : BASE_PATH;
 }

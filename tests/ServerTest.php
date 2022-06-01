@@ -3,17 +3,18 @@
 namespace SilverStripe\Serve\Tests;
 
 use BadMethodCallException;
-use PHPUnit_Framework_TestCase;
 use SilverStripe\Serve\ServerFactory;
 use SilverStripe\Serve\PortChecker;
+use PHPUnit\Framework\TestCase;
 
-class ServerTest extends PHPUnit_Framework_TestCase
+class ServerTest extends TestCase
 {
     public function testStartStop()
     {
         $factory = new ServerFactory(BASE_PATH);
+
         $server = $factory->launchServer([
-            'bootstrapFile' => $this->getBootstrapPath(),
+            'bootstrapFile' => dirname(__FILE__) . '/serve-bootstrap.php',
             'host' => 'localhost',
             'preferredPort' => '3000',
         ]);
@@ -22,13 +23,14 @@ class ServerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(PortChecker::isPortOpen('localhost', $server->getPort()));
 
         // Test a "stable" URL available via the framework module, that isn't tied to an environment type
-        $content = file_get_contents($server->getURL() . 'Security/login');
+        $content = file_get_contents($server->getURL());
 
         // Check that the login form exists on the displayed page
-        $this->assertContains('MemberLoginForm_LoginForm', $content);
+        $this->assertStringContainsString('Hello World!', $content);
 
         // When it stops, it stops listening
         $server->stop();
+
         $this->assertFalse(PortChecker::isPortOpen('localhost', $server->getPort()));
     }
 
@@ -41,7 +43,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
         ]);
 
         // Start fails because the server is already started
-        $this->setExpectedException('LogicException');
+        $this->expectException('LogicException');
         $server->start();
     }
 
@@ -56,7 +58,7 @@ class ServerTest extends PHPUnit_Framework_TestCase
         $server->stop();
 
         // Stop a 2nd fails because the server is already stopped
-        $this->setExpectedException('LogicException');
+        $this->expectException('LogicException');
         $server->stop();
     }
 
@@ -77,26 +79,5 @@ class ServerTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue(PortChecker::isPortOpen('localhost', $server1->getPort()));
         $this->assertTrue(PortChecker::isPortOpen('localhost', $server2->getPort()));
-    }
-
-    /**
-     * Get relative path to serve-bootstrap.php from cwd
-     *
-     * @return string
-     */
-    protected function getBootstrapPath()
-    {
-        $parents = [
-            'vendor/silverstripe/framework/', // framework in vendor
-            'framework/', // old ss4 root module
-            '' // framework root
-        ];
-        $path = 'tests/behat/serve-bootstrap.php';
-        foreach ($parents as $parent) {
-            if (file_exists(BASE_PATH . '/' . $parent . $path)) {
-                return $parent . $path;
-            }
-        }
-        throw new BadMethodCallException("serve-bootstrap.php could not be found");
     }
 }
