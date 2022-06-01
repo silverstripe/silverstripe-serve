@@ -11,7 +11,6 @@ before_script:
   - phpenv rehash
   - export PATH=~/.composer/vendor/bin:$PATH
   - composer validate
-  - composer require --prefer-dist --no-update silverstripe/recipe-core:2.x-dev
   - composer install --prefer-dist
 
 script:
