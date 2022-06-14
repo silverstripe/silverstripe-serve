@@ -6,12 +6,28 @@ use SilverStripe\Core\Environment;
 
 define('BASE_URL', '');
 
+// Parse command-line options and env vars
+$options = getopt('', ['host:', 'port:', 'hash:', 'bootstrap-file:', 'open', 'path:']);
+
 // Autoload
 $paths = [
     __DIR__ . "/../autoload.php", // in ./vendor/bin
     __DIR__ . "/../vendor/autoload.php", // in ./bin
     __DIR__ . "/../../../autoload.php", // in ./vendor/silverstripe/serve/bin
 ];
+
+
+if (!empty($options['path'])) {
+    $options['path'] = realpath($options['path']);
+    $dir = rtrim($options['path'], '/');
+
+    if (!is_dir($dir)) {
+        throw new Exception('--path is not a valid directory');
+    }
+
+    $paths[] = $dir . '/../autoload.php';
+}
+
 foreach ($paths as $path) {
     if (file_exists($path)) {
         require_once $path;
@@ -19,34 +35,35 @@ foreach ($paths as $path) {
     }
 }
 
-// Parse command-line options and env vars
-$options = getopt(null, [ 'host:', 'port:', 'hash:', 'bootstrap-file:', 'open' ]);
-
 if (!empty($options['host'])) {
-	$host = $options['host'];
+    $host = $options['host'];
 } elseif (Environment::getEnv('SERVE_HOST')) {
-	$host = Environment::getEnv('SERVE_HOST');
+    $host = Environment::getEnv('SERVE_HOST');
 } else {
-	$host = '0.0.0.0';
+    $host = '0.0.0.0';
 }
 
 if (!empty($options['port'])) {
-	$port = $options['port'];
+    $port = $options['port'];
 } elseif (Environment::getEnv('SERVE_PORT')) {
-	$port = Environment::getEnv('SERVE_PORT');
+    $port = Environment::getEnv('SERVE_PORT');
 } else {
-	$port = '8080';
+    $port = '8080';
 }
 
 if (!empty($options['bootstrap-file'])) {
-	$bootstrapFile = $options['bootstrap-file'];
+    $bootstrapFile = $options['bootstrap-file'];
 } elseif (Environment::getEnv('SERVE_BOOTSTRAP_FILE')) {
-	$bootstrapFile = Environment::getEnv('SERVE_BOOTSTRAP_FILE');
+    $bootstrapFile = Environment::getEnv('SERVE_BOOTSTRAP_FILE');
 } else {
-	$bootstrapFile = null;
+    $bootstrapFile = null;
 }
 
-$path = defined('PUBLIC_PATH') ? PUBLIC_PATH : BASE_PATH;
+if (!empty($options['path'])) {
+    $path = $options['path'];
+} else {
+    $path = defined('PUBLIC_PATH') ? PUBLIC_PATH : BASE_PATH;
+}
 
 $factory = new SilverStripe\Serve\ServerFactory($path);
 
@@ -61,7 +78,7 @@ print "Server running at " . $server->getURL() . " for "  . $path . "...\n";
 // Check if the user wants to open the page in their browser
 if (isset($options['open'])) {
     // Simple function to detect if a command exists on *nix system
-    $command_exist = function($cmd) {
+    $command_exist = function ($cmd) {
         $return = shell_exec(sprintf("which %s", escapeshellarg($cmd)));
         return !empty($return);
     };
