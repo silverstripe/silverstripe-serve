@@ -1,8 +1,8 @@
-# SilverStripe Serve
+# Silverstripe Serve
 
 [![CI](https://github.com/silverstripe/silverstripe-serve/actions/workflows/ci.yml/badge.svg)](https://github.com/silverstripe/silverstripe-serve/actions/workflows/ci.yml)
 
-A simple dev task, to start a development server for your SilverStripe app.
+A simple dev task, to start a development server for your Silverstripe app.
 
 ## Getting started
 
@@ -30,7 +30,6 @@ You can add the `--open` argument to open a new browser window with the new serv
 $ vendor/bin/serve --open
 ```
 
-
 ## Including a bootstrap file
 
 The bootstrap-file argument lets you include a custom PHP file after
@@ -39,7 +38,7 @@ but before main.php has been loaded.
 
 This can be used for any number of things, but the primary use-case
 is to pull in any stub code & config that wouldn’t normally be included
-by SilverStripe in the current execution session, such as test stubs.
+by Silverstripe in the current execution session, such as test stubs.
 
 ```sh
 $ vendor/bin/serve --bootstrap-file tests/serve-bootstrap.php
@@ -47,7 +46,7 @@ $ vendor/bin/serve --bootstrap-file tests/serve-bootstrap.php
 
 ## Using as a library
 
-You can also use serve as a library, to start a SilverStripe server
+You can also use serve as a library, to start a Silverstripe server
 from some other tool such as a test suite:
 
 Assuming that `BASE_PATH` is defined, you can use it like this:
