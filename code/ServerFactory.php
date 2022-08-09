@@ -46,10 +46,13 @@ class ServerFactory
         $port = PortChecker::findNextAvailablePort($host, $options['preferredPort']);
 
         $base = __DIR__;
-        $command = "exec " . escapeshellcmd($bin) .
+        $command = escapeshellcmd($bin) .
             ' -S ' . escapeshellarg($host . ':' . $port) .
             ' -t ' . escapeshellarg($this->path) . ' ' .
             escapeshellarg($base . '/server-handler.php');
+        if(\DIRECTORY_SEPARATOR !== '\\') {
+            $command .= "exec ";
+        }
 
         if (!empty($options['bootstrapFile'])) {
             $command = "SERVE_BOOTSTRAP_FILE=" . escapeshellarg($options['bootstrapFile']) . " $command";
