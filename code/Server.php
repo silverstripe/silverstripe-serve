@@ -94,7 +94,7 @@ class Server
             throw new LogicException("Server already started; cannot start a 2nd time");
         }
 
-        $this->process = new Process($this->command);
+        $this->process = Process::fromShellCommandline($this->command);
         $this->process->setTimeout(null);
         $this->process->start();
 
